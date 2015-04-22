@@ -20,7 +20,7 @@ public class ResourceDownloader {
     private String pageText;
 
     /**
-     * Constructor: it downloads the web page and store in a String variable.
+     * It downloads the web page and store in a String variable.
      *
      * @param link url of the page to download
      */
@@ -44,4 +44,9 @@ public class ResourceDownloader {
             }
         }
     }
+
+    public String getPageText() {
+        return pageText;
+    }
+    
 }
