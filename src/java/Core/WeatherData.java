@@ -57,7 +57,7 @@ public class WeatherData {
     public void setDate(Timestamp date) {
         this.date = date;
     }
-    
+
     public String getCondition() {
         return condition;
     }
@@ -161,5 +161,4 @@ public class WeatherData {
     public void setSnow(int snow) {
         this.snow = snow;
     }
-
 }

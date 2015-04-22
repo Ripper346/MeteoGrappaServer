@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Operate with the database and data
+ * Operate between the database and the data.
  *
  * @author Alessandro
  */
@@ -27,19 +27,20 @@ public abstract class DBWriter {
      * information when the main class download the data. The sql for creating
      * table is:
      * <p>
-     * <code>CREATE TABLE `MeteoGrappa_Data` (`datetime` TIMESTAMP NOT NULL, `condition`
-     * VARCHAR, `temperature` REAL, `humidity` INTEGER, `wind_speed` REAL,
-     * `wind_direction` VARCHAR, `pressure` REAL, `solar_radiation` INTEGER,
-     * `solar_percentage` INTEGER, `uv` REAL, `deaf_temperature` REAL, `rain`
-     * REAL, `feel_temperature` REAL, `snow` INTEGER, PRIMARY KEY (`datetime`));
+     * <code>CREATE TABLE `MeteoGrappa_Data` (`datetime` TIMESTAMP NOT NULL,
+     * `condition` VARCHAR(30), `temperature` REAL, `humidity` INTEGER,
+     * `wind_speed` REAL,`wind_direction` VARCHAR(10), `pressure` REAL,
+     * `solar_radiation` INTEGER,`solar_percentage` INTEGER, `uv` REAL,
+     * `deaf_temperature` REAL, `rain` REAL, `feel_temperature` REAL,
+     * `snow` INTEGER, PRIMARY KEY (`datetime`));
      * </code>
-     * 
+     *
      * @param jdbc odbc string for connect and create the database
      */
     protected void init(String jdbc) {
         try {
             connection = DriverManager.getConnection(jdbc);
-            connection.createStatement().executeUpdate("CREATE TABLE `MeteoGrappa_Data` (`datetime` TIMESTAMP NOT NULL, `condition` VARCHAR, `temperature` REAL, `humidity` INTEGER, `wind_speed` REAL, `wind_direction` VARCHAR, `pressure` REAL, `solar_radiation` INTEGER, `solar_percentage` INTEGER, `uv` REAL, `deaf_temperature` REAL, `rain` REAL, `feel_temperature` REAL, `snow` INTEGER, PRIMARY KEY (`datetime`));");
+            connection.createStatement().executeUpdate("CREATE TABLE `MeteoGrappa_Data` (`datetime` TIMESTAMP NOT NULL, `condition` VARCHAR(30), `temperature` REAL, `humidity` INTEGER, `wind_speed` REAL, `wind_direction` VARCHAR(10), `pressure` REAL, `solar_radiation` INTEGER, `solar_percentage` INTEGER, `uv` REAL, `deaf_temperature` REAL, `rain` REAL, `feel_temperature` REAL, `snow` INTEGER, PRIMARY KEY (`datetime`));");
         } catch (SQLException ex) {
             Logger.getLogger(DBWriter.class.getName()).log(Level.SEVERE, null, ex);
         }

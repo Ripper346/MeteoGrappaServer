@@ -8,7 +8,10 @@ package Core;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class download the content of a web page.
@@ -35,12 +38,12 @@ public class ResourceDownloader {
                 pageText += line;
             }
         } catch (IOException ex) {
-            // nothing to do
+            Logger.getLogger(ResourceDownloader.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 siteBuffer.close();
-            } catch (NullPointerException | IOException ex) {
-                // nothing to do
+            } catch (IOException ex) {
+                Logger.getLogger(ResourceDownloader.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -48,5 +51,5 @@ public class ResourceDownloader {
     public String getPageText() {
         return pageText;
     }
-    
+
 }

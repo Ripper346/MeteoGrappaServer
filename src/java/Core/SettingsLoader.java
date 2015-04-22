@@ -15,10 +15,13 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 /**
- * Load from settings.xml file the application settings. The xml file has to be 
+ * Load from settings.xml file the application settings. The xml file has to be
  * in the form below.
  * <p>
- * 
+ * <code>&lt;Settings&gt;</code><br>
+ * <code>&lt;url&gt;URL_WHERE_DOWNLOAD&lt;/url&gt;</code><br>
+ * <code>&lt;patternRegex&gt;REGULAR_EXPRESSION_FOR_EXTRACT_DATA&lt;/patternRegex&gt;</code><br>
+ * <code>&lt;/Settings&gt;</code>
  *
  * @author Alessandro
  */
@@ -38,7 +41,7 @@ public class SettingsLoader {
             Logger.getLogger(SettingsLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public String getUrl() {
         return url;
     }
