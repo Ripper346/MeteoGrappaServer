@@ -5,6 +5,8 @@
  */
 package Core;
 
+import java.sql.Timestamp;
+
 /**
  * This class contains the data of weather from a page.
  *
@@ -12,7 +14,7 @@ package Core;
  */
 public class WeatherData {
 
-    private String date;
+    private Timestamp date;
     private String condition;
     private double temperature;
     private int humidity;
@@ -32,7 +34,7 @@ public class WeatherData {
     }
 
     public WeatherData(String date, String condition, double temperature, int humidity, double windSpeed, String windDirection, double pressure, int solar, int solarPercentage, double uv, double dewTemperature, int rain, double feelTemperature, int snow) {
-        this.date = date;
+        this.date = Timestamp.valueOf(date);
         this.condition = condition;
         this.temperature = temperature;
         this.humidity = humidity;
@@ -47,15 +49,15 @@ public class WeatherData {
         this.feelTemperature = feelTemperature;
         this.snow = snow;
     }
-    
-    public String getDate() {
+
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
-
+    
     public String getCondition() {
         return condition;
     }

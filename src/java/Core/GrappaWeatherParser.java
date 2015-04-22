@@ -21,7 +21,7 @@ public class GrappaWeatherParser implements Runnable {
         settings = new SettingsLoader();
         ResourceDownloader resource = new ResourceDownloader(settings.getUrl());
         WeatherData data = extractWeatherDataFromString(resource.getPageText());
-        DBWriter database = new DBWriter();
+        DerbyDBWriter database = new DerbyDBWriter();
         database.write(data);
         database.close();
     }
