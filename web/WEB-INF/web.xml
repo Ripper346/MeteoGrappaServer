@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <display-name>Grappa Weather</display-name>
+    <context-param>
+        <description>Regular expression pattern for extract the data from web page</description>
+        <param-name>GrappaWeatherParser_pattern</param-name>
+        <param-value>Ultimo aggiornamento([\s\S](?!ajaxdate))+[^&gt;]+&gt;(\d+)\/(\d+)\/(\d+)([\s\S](?!ajaxtime))+[^&gt;]+&gt;(\d\d:\d\d:\d\d)([\s\S](?!ajaxcurrentcond))+[^&gt;]+&gt;([^,]+), ([^&lt;]+)([\s\S](?!ajaxtemp))+[^&gt;]+&gt;(\d+(\.\d+)?)([\s\S](?!ajaxhumidity))+[^&gt;]+&gt;(\d+)([\s\S](?!ajaxwind))+[^&gt;]+&gt;((\d+(\.\d+)?)|([^&lt;]+))([\s\S](?!ajaxwinddir))+[^&gt;]+&gt;([^&lt;]+)([\s\S](?!ajaxbaro))+[^&gt;]+&gt;(\d+(\.\d+)?)([\s\S](?!ajaxsolar))+[^&gt;]+&gt;(\d+)([\s\S](?! \d+%))+&gt; (\d+)%([\s\S](?!ajaxuv))+[^&gt;]+&gt;(\d+(\.\d+)?)([\s\S](?!ajaxdew))+[^&gt;]+&gt;(\d+(\.\d+)?)([\s\S](?!ajaxrainratehr))+[^&gt;]+&gt;(\d+(\.\d+)?)([\s\S](?!ajaxapparenttemp))+[^&gt;]+&gt;(\d+(\.\d+)?)([\s\S](?!Altezza neve))+([\s\S](?!&lt;span))+.[^&gt;]+&gt;(\d+(\.\d+)?)</param-value>
+    </context-param>
+    <context-param>
+        <description>Time in minutes between downloads of the data</description>
+        <param-name>GrappaWeatherParser_interval</param-name>
+        <param-value>30</param-value>
+    </context-param>
+    <context-param>
+        <description>Url of the web page to parse</description>
+        <param-name>GrappaWeatherParser_url</param-name>
+        <param-value>http://www.metocimagrappa.it/wd/tabella.html</param-value>
+    </context-param>
+    <listener>
+        <description>Grappa weather parser</description>
+        <listener-class>workers.ApplicationContextListener</listener-class>
+    </listener>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>
