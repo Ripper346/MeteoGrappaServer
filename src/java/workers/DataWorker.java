@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Core;
+package workers;
 
+import core.GrappaWeatherParser;
 import javax.servlet.ServletContext;
 
 /**
@@ -30,6 +31,6 @@ public class DataWorker implements Runnable {
      */
     @Override
     public void run() {
-        new Thread(new GrappaWeatherParser()).start();
+        new Thread(new GrappaWeatherParser(servletContext)).start();
     }
 }
