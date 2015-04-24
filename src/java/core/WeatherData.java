@@ -28,6 +28,10 @@ public class WeatherData {
     private double rain;
     private double feelTemperature;
     private int snow;
+    /**
+     * Array of the wind directions.
+     */
+    public static final String[] WINDDIRECTIONS = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
 
     public WeatherData() {
         this(null, "", 0.0, 0, 0.0, "", 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0);

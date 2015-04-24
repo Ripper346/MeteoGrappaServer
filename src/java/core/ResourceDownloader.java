@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 /**
  * This class download the content of a web page.
@@ -17,7 +18,7 @@ import org.jsoup.Jsoup;
  */
 public class ResourceDownloader {
 
-    private String pageText;
+    private Document page;
 
     /**
      * It downloads the web page and store in a String variable.
@@ -26,14 +27,17 @@ public class ResourceDownloader {
      */
     public ResourceDownloader(String link) {
         try {
-            pageText = Jsoup.connect(link).get().html();
+            page = Jsoup.connect(link).get();
         } catch (IOException ex) {
             Logger.getLogger(ResourceDownloader.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
 
     public String getPageText() {
-        return pageText;
+        return page.text();
     }
 
+    public String getPageHtml() {
+        return page.html();
+    }
 }

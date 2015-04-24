@@ -17,8 +17,8 @@ import javax.servlet.ServletContext;
 public class GrappaWeatherParser implements Runnable {
 
     //private SettingsLoader settings;
-    private ServletContext settings;
-
+    private final ServletContext settings;
+    
     public GrappaWeatherParser(ServletContext settings) {
         this.settings = settings;
     }
@@ -30,7 +30,9 @@ public class GrappaWeatherParser implements Runnable {
     @Override
     public void run() {
         ResourceDownloader resource = new ResourceDownloader(settings.getInitParameter("GrappaWeatherParser_url"));
-        WeatherData data = extractWeatherDataFromString(resource.getPageText());
+        ResourceDownloader rawData = new ResourceDownloader(settings.getInitParameter("GrappaWeatherParser_urlRaw"));
+        String[] rawDataArray = rawData.getPageText().split(" ");
+        WeatherData data = extractWeatherDataFromString(resource.getPageHtml(), rawDataArray);
         DerbyDBWriter database = new DerbyDBWriter();
         database.write(data);
         database.close();
@@ -40,58 +42,30 @@ public class GrappaWeatherParser implements Runnable {
      * This method extract data from a text. It uses a regular expression for
      * extract the variables and them are combined in a WeatherData object.
      *
-     * @param text string where extract data
+     * @param text string of the web page where extract data
+     * @param rawDataArray contains the second document downloaded by the page with raw data
      * @return WeatherData object that contains the data extract
      */
-    public WeatherData extractWeatherDataFromString(String text) {
+    public WeatherData extractWeatherDataFromString(String text, String[] rawDataArray) {
         Matcher matches;
         WeatherData data = new WeatherData();
-        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexTimestamp")).matcher(text);
-        if (matches.find()) {
-            data.setDate("20" + matches.group(4) + "-" + matches.group(3) + "-" + matches.group(2) + " " + (matches.group(7).length() == 5 ? matches.group(7) + ":00" : matches.group(7)));
-        }
-        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexCondition")).matcher(text);
-        if (matches.find()) {
-            data.setCondition(matches.group(1) + ", " + matches.group(2));
-        }
-        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexTemperature")).matcher(text);
-        if (matches.find()) {
-            data.setTemperature(matches.group(1));
-        }
-        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexHumidity")).matcher(text);
-        if (matches.find()) {
-            data.setHumidity(matches.group(1));
-        }
-        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexWind")).matcher(text);
-        if (matches.find()) {
-            data.setWindSpeed(matches.group(1));
-            data.setWindDirection(matches.group(4));
-        }
-        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexPressure")).matcher(text);
-        if (matches.find()) {
-            data.setPressure(matches.group(1));
-        }
-        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexSolar")).matcher(text);
-        if (matches.find()) {
-            data.setSolar(matches.group(1));
-            data.setSolarPercentage(matches.group(3));
-        }
-        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexUv")).matcher(text);
-        if (matches.find()) {
-            data.setUv(matches.group(1));
-        }
-        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexDew")).matcher(text);
-        if (matches.find()) {
-            data.setDewTemperature(matches.group(2));
-        }
-        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexRain")).matcher(text);
-        if (matches.find()) {
-            data.setRain(matches.group(2));
-        }
-        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexFeelTemperature")).matcher(text);
-        if (matches.find()) {
-            data.setFeelTemperature(matches.group(1));
-        }
+        String[] date = rawDataArray[Integer.parseInt(settings.getInitParameter("GrappaWeatherParser_indexDate"))].split("/");
+        data.setDate(date[2] + "-" + date[1] + "-" + date[0] + " " + rawDataArray[Integer.parseInt(settings.getInitParameter("GrappaWeatherParser_indexTime"))].substring(1));
+        String condition = rawDataArray[Integer.parseInt(settings.getInitParameter("GrappaWeatherParser_indexCondition"))].replaceAll("_", " ").toLowerCase();
+        condition = condition.substring(0, 1).toUpperCase() + condition.substring(1);
+        data.setCondition(condition.replaceAll("/", ", "));
+        data.setTemperature(rawDataArray[Integer.parseInt(settings.getInitParameter("GrappaWeatherParser_indexTemperature"))]);
+        data.setHumidity(rawDataArray[Integer.parseInt(settings.getInitParameter("GrappaWeatherParser_indexHumidity"))]);
+        data.setWindSpeed(rawDataArray[Integer.parseInt(settings.getInitParameter("GrappaWeatherParser_indexWindSpeed"))]);
+        String windDirection = WeatherData.WINDDIRECTIONS[(int) Math.round(((Double.parseDouble(rawDataArray[Integer.parseInt(settings.getInitParameter("GrappaWeatherParser_indexWindDirection"))]) + 11) / 22.5) % 16)];
+        data.setWindDirection(windDirection);
+        data.setPressure(rawDataArray[Integer.parseInt(settings.getInitParameter("GrappaWeatherParser_indexPressure"))]);
+        data.setSolar((int)Double.parseDouble(rawDataArray[Integer.parseInt(settings.getInitParameter("GrappaWeatherParser_indexSolar"))]));
+        data.setSolarPercentage(rawDataArray[Integer.parseInt(settings.getInitParameter("GrappaWeatherParser_indexSolarPercentage"))]);
+        data.setUv(rawDataArray[Integer.parseInt(settings.getInitParameter("GrappaWeatherParser_indexUv"))]);
+        data.setDewTemperature(rawDataArray[Integer.parseInt(settings.getInitParameter("GrappaWeatherParser_indexDew"))]);
+        data.setRain(Double.parseDouble(rawDataArray[Integer.parseInt(settings.getInitParameter("GrappaWeatherParser_indexRain"))])*60);
+        data.setFeelTemperature(rawDataArray[Integer.parseInt(settings.getInitParameter("GrappaWeatherParser_indexFeelTemperature"))]);
         matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexSnow")).matcher(text);
         if (matches.find()) {
             data.setSnow(matches.group(2));

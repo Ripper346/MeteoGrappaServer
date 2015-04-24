@@ -76,6 +76,81 @@
         <param-name>GrappaWeatherParser_regexSnow</param-name>
         <param-value>Altezza neve([\s\S](?!&lt;span))+.[^&gt;]+&gt;(\d+(\.\d+)?)</param-value>
     </context-param>
+    <context-param>
+        <description>Index of variable of time</description>
+        <param-name>GrappaWeatherParser_indexTime</param-name>
+        <param-value>32</param-value>
+    </context-param>
+    <context-param>
+        <description>Index of variable of date</description>
+        <param-name>GrappaWeatherParser_indexDate</param-name>
+        <param-value>74</param-value>
+    </context-param>
+    <context-param>
+        <description>Index of variable of condition</description>
+        <param-name>GrappaWeatherParser_indexCondition</param-name>
+        <param-value>49</param-value>
+    </context-param>
+    <context-param>
+        <description>Index of variable of temperature</description>
+        <param-name>GrappaWeatherParser_indexTemperature</param-name>
+        <param-value>4</param-value>
+    </context-param>
+    <context-param>
+        <description>Index of variable of humidity</description>
+        <param-name>GrappaWeatherParser_indexHumidity</param-name>
+        <param-value>5</param-value>
+    </context-param>
+    <context-param>
+        <description>Index of variable of wind speed</description>
+        <param-name>GrappaWeatherParser_indexWindSpeed</param-name>
+        <param-value>2</param-value>
+    </context-param>
+    <context-param>
+        <description>Index of variable of wind direction</description>
+        <param-name>GrappaWeatherParser_indexWindDirection</param-name>
+        <param-value>3</param-value>
+    </context-param>
+    <context-param>
+        <description>Index of variable of pressure</description>
+        <param-name>GrappaWeatherParser_indexPressure</param-name>
+        <param-value>6</param-value>
+    </context-param>
+    <context-param>
+        <description>Index of variable of solar</description>
+        <param-name>GrappaWeatherParser_indexSolar</param-name>
+        <param-value>127</param-value>
+    </context-param>
+    <context-param>
+        <description>Index of variable of solar percentage</description>
+        <param-name>GrappaWeatherParser_indexSolarPercentage</param-name>
+        <param-value>34</param-value>
+    </context-param>
+    <context-param>
+        <description>Index of variable of uv</description>
+        <param-name>GrappaWeatherParser_indexUv</param-name>
+        <param-value>79</param-value>
+    </context-param>
+    <context-param>
+        <description>Index of variable of dew</description>
+        <param-name>GrappaWeatherParser_indexDew</param-name>
+        <param-value>72</param-value>
+    </context-param>
+    <context-param>
+        <description>Index of variable of rain</description>
+        <param-name>GrappaWeatherParser_indexRain</param-name>
+        <param-value>10</param-value>
+    </context-param>
+    <context-param>
+        <description>Index of variable of feel temperature</description>
+        <param-name>GrappaWeatherParser_indexFeelTemperature</param-name>
+        <param-value>130</param-value>
+    </context-param>
+    <context-param>
+        <description>Url of the web page with raw data</description>
+        <param-name>GrappaWeatherParser_urlRaw</param-name>
+        <param-value>http://www.meteocimagrappa.it/wd/clientraw.txt</param-value>
+    </context-param>
     <listener>
         <description>Grappa weather parser</description>
         <listener-class>workers.ApplicationContextListener</listener-class>
