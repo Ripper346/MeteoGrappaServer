@@ -33,7 +33,7 @@ public class ApplicationContextListener implements ServletContextListener {
         String interval = context.getInitParameter("GrappaWeatherParser_interval");
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(
-                new GrappaWeatherParser(context),
+                new DataWorker(context),
                 0,
                 interval == null ? 30 : Integer.parseInt(interval),
                 TimeUnit.MINUTES

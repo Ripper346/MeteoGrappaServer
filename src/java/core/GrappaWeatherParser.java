@@ -22,7 +22,7 @@ public class GrappaWeatherParser implements Runnable {
     public GrappaWeatherParser(ServletContext settings) {
         this.settings = settings;
     }
-    
+
     /**
      * Launch the downloader, then it extract the data and write it in the
      * database.
@@ -44,17 +44,57 @@ public class GrappaWeatherParser implements Runnable {
      * @return WeatherData object that contains the data extract
      */
     public WeatherData extractWeatherDataFromString(String text) {
-        Pattern pattern = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_pattern"));
-        Matcher matches = pattern.matcher(text);
-        WeatherData data = null;
+        Matcher matches;
+        WeatherData data = new WeatherData();
+        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexTimestamp")).matcher(text);
         if (matches.find()) {
-            data = new WeatherData(matches.group(4) + "-" + matches.group(3) + "-" + matches.group(2) + " " + matches.group(6),
-                    matches.group(8) + ", " + matches.group(9), Double.parseDouble(matches.group(11)),
-                    Integer.parseInt(matches.group(14)), Double.parseDouble(matches.group(16)),
-                    matches.group(21), Double.parseDouble(matches.group(23)), Integer.parseInt(matches.group(26)),
-                    Integer.parseInt(matches.group(28)), Double.parseDouble(matches.group(30)),
-                    Double.parseDouble(matches.group(33)), Integer.parseInt(matches.group(36)),
-                    Double.parseDouble(matches.group(39)), Integer.parseInt(matches.group(43)));
+            data.setDate("20" + matches.group(4) + "-" + matches.group(3) + "-" + matches.group(2) + " " + (matches.group(7).length() == 5 ? matches.group(7) + ":00" : matches.group(7)));
+        }
+        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexCondition")).matcher(text);
+        if (matches.find()) {
+            data.setCondition(matches.group(1) + ", " + matches.group(2));
+        }
+        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexTemperature")).matcher(text);
+        if (matches.find()) {
+            data.setTemperature(matches.group(1));
+        }
+        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexHumidity")).matcher(text);
+        if (matches.find()) {
+            data.setHumidity(matches.group(1));
+        }
+        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexWind")).matcher(text);
+        if (matches.find()) {
+            data.setWindSpeed(matches.group(1));
+            data.setWindDirection(matches.group(4));
+        }
+        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexPressure")).matcher(text);
+        if (matches.find()) {
+            data.setPressure(matches.group(1));
+        }
+        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexSolar")).matcher(text);
+        if (matches.find()) {
+            data.setSolar(matches.group(1));
+            data.setSolarPercentage(matches.group(3));
+        }
+        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexUv")).matcher(text);
+        if (matches.find()) {
+            data.setUv(matches.group(1));
+        }
+        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexDew")).matcher(text);
+        if (matches.find()) {
+            data.setDewTemperature(matches.group(2));
+        }
+        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexRain")).matcher(text);
+        if (matches.find()) {
+            data.setRain(matches.group(2));
+        }
+        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexFeelTemperature")).matcher(text);
+        if (matches.find()) {
+            data.setFeelTemperature(matches.group(1));
+        }
+        matches = Pattern.compile(settings.getInitParameter("GrappaWeatherParser_regexSnow")).matcher(text);
+        if (matches.find()) {
+            data.setSnow(matches.group(2));
         }
         return data;
     }

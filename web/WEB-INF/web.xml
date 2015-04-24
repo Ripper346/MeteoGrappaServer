@@ -2,19 +2,79 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <display-name>Grappa Weather</display-name>
     <context-param>
+        <description>Time in minutes between downloads of the data</description>
+        <param-name>GrappaWeatherParser_interval</param-name>
+        <param-value>5</param-value>
+    </context-param>
+    <context-param>
+        <description>Url of the web page to parse</description>
+        <param-name>GrappaWeatherParser_url</param-name>
+        <param-value>http://www.meteocimagrappa.it/wd/tabella.html</param-value>
+    </context-param>
+    <context-param>
         <description>Regular expression pattern for extract the data from web page</description>
         <param-name>GrappaWeatherParser_pattern</param-name>
         <param-value>Ultimo aggiornamento([\s\S](?!ajaxdate))+[^&gt;]+&gt;(\d+)\/(\d+)\/(\d+)([\s\S](?!ajaxtime))+[^&gt;]+&gt;(\d\d:\d\d:\d\d)([\s\S](?!ajaxcurrentcond))+[^&gt;]+&gt;([^,]+), ([^&lt;]+)([\s\S](?!ajaxtemp))+[^&gt;]+&gt;(\d+(\.\d+)?)([\s\S](?!ajaxhumidity))+[^&gt;]+&gt;(\d+)([\s\S](?!ajaxwind))+[^&gt;]+&gt;((\d+(\.\d+)?)|([^&lt;]+))([\s\S](?!ajaxwinddir))+[^&gt;]+&gt;([^&lt;]+)([\s\S](?!ajaxbaro))+[^&gt;]+&gt;(\d+(\.\d+)?)([\s\S](?!ajaxsolar))+[^&gt;]+&gt;(\d+)([\s\S](?! \d+%))+&gt; (\d+)%([\s\S](?!ajaxuv))+[^&gt;]+&gt;(\d+(\.\d+)?)([\s\S](?!ajaxdew))+[^&gt;]+&gt;(\d+(\.\d+)?)([\s\S](?!ajaxrainratehr))+[^&gt;]+&gt;(\d+(\.\d+)?)([\s\S](?!ajaxapparenttemp))+[^&gt;]+&gt;(\d+(\.\d+)?)([\s\S](?!Altezza neve))+([\s\S](?!&lt;span))+.[^&gt;]+&gt;(\d+(\.\d+)?)</param-value>
     </context-param>
     <context-param>
-        <description>Time in minutes between downloads of the data</description>
-        <param-name>GrappaWeatherParser_interval</param-name>
-        <param-value>30</param-value>
+        <description>Regular expression for extract timestamp</description>
+        <param-name>GrappaWeatherParser_regexTimestamp</param-name>
+        <param-value>ajaxdate([^&gt;]+&gt;){1,2}(\d+)\/(\d+)\/(\d+)([\s\S](?!ajaxtime))+([^&gt;]+&gt;){1,2}(\d\d:\d\d(:\d\d)?)</param-value>
     </context-param>
     <context-param>
-        <description>Url of the web page to parse</description>
-        <param-name>GrappaWeatherParser_url</param-name>
-        <param-value>http://www.metocimagrappa.it/wd/tabella.html</param-value>
+        <description>Regular expression for extract condition</description>
+        <param-name>GrappaWeatherParser_regexCondition</param-name>
+        <param-value>ajaxcurrentcond[^\\]+\\([^/]+)/([^&lt;]+)</param-value>
+    </context-param>
+    <context-param>
+        <description>Regular expression for extract temperature</description>
+        <param-name>GrappaWeatherParser_regexTemperature</param-name>
+        <param-value>ajaxtemp[^&gt;]+&gt;(\d+(\.\d+)?)</param-value>
+    </context-param>
+    <context-param>
+        <description>Regular expression for extract humidity</description>
+        <param-name>GrappaWeatherParser_regexHumidity</param-name>
+        <param-value>ajaxhumidity[^&gt;]+&gt;(\d+)</param-value>
+    </context-param>
+    <context-param>
+        <description>Regular expression for extract wind</description>
+        <param-name>GrappaWeatherParser_regexWind</param-name>
+        <param-value>ajaxwind[^&gt;]+&gt;(\d+(\.\d+)?)([\s\S](?!ajaxwinddir))+[^&gt;]+&gt;([^&lt;]+)</param-value>
+    </context-param>
+    <context-param>
+        <description>Regular expression for extract pressure</description>
+        <param-name>GrappaWeatherParser_regexPressure</param-name>
+        <param-value>ajaxbaro[^&gt;]+&gt;(\d+(\.\d+)?)</param-value>
+    </context-param>
+    <context-param>
+        <description>Regular expression for extract solar</description>
+        <param-name>GrappaWeatherParser_regexSolar</param-name>
+        <param-value>ajaxsolar[^&gt;]+&gt;(\d+)([\s\S](?! \d+%))+&gt; (\d+)%</param-value>
+    </context-param>
+    <context-param>
+        <description>Regular expression for extract uv</description>
+        <param-name>GrappaWeatherParser_regexUv</param-name>
+        <param-value>ajaxuv[^&gt;]+&gt;(\d+(\.\d+)?)</param-value>
+    </context-param>
+    <context-param>
+        <description>Regular expression for extract dew</description>
+        <param-name>GrappaWeatherParser_regexDew</param-name>
+        <param-value>ajaxdew([^&gt;]+&gt;){1,2}(\d+(\.\d+)?)</param-value>
+    </context-param>
+    <context-param>
+        <description>Regular expression for extract rain</description>
+        <param-name>GrappaWeatherParser_regexRain</param-name>
+        <param-value>ajaxrainratehr([^&gt;]+&gt;){1,2}(\d+(\.\d+)?)</param-value>
+    </context-param>
+    <context-param>
+        <description>Regular expression for extract feel temperature</description>
+        <param-name>GrappaWeatherParser_regexFeelTemperature</param-name>
+        <param-value>ajaxapparenttemp[^&gt;]+&gt;(\d+(\.\d+)?)</param-value>
+    </context-param>
+    <context-param>
+        <description>Regular expression for extract snow</description>
+        <param-name>GrappaWeatherParser_regexSnow</param-name>
+        <param-value>Altezza neve([\s\S](?!&lt;span))+.[^&gt;]+&gt;(\d+(\.\d+)?)</param-value>
     </context-param>
     <listener>
         <description>Grappa weather parser</description>

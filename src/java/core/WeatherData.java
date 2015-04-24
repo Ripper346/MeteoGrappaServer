@@ -25,16 +25,16 @@ public class WeatherData {
     private int solarPercentage;
     private double uv;
     private double dewTemperature;
-    private int rain;
+    private double rain;
     private double feelTemperature;
     private int snow;
 
     public WeatherData() {
-        this("", "", 0.0, 0, 0.0, "", 0.0, 0, 0, 0.0, 0.0, 0, 0.0, 0);
+        this(null, "", 0.0, 0, 0.0, "", 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0);
     }
 
-    public WeatherData(String date, String condition, double temperature, int humidity, double windSpeed, String windDirection, double pressure, int solar, int solarPercentage, double uv, double dewTemperature, int rain, double feelTemperature, int snow) {
-        this.date = Timestamp.valueOf(date);
+    public WeatherData(String date, String condition, double temperature, int humidity, double windSpeed, String windDirection, double pressure, int solar, int solarPercentage, double uv, double dewTemperature, double rain, double feelTemperature, int snow) {
+        this.date = date == null ? null : Timestamp.valueOf(date);
         this.condition = condition;
         this.temperature = temperature;
         this.humidity = humidity;
@@ -56,6 +56,10 @@ public class WeatherData {
 
     public void setDate(Timestamp date) {
         this.date = date;
+    }
+
+    public void setDate(String date) throws IllegalArgumentException {
+        this.setDate(Timestamp.valueOf(date));
     }
 
     public String getCondition() {
@@ -138,11 +142,11 @@ public class WeatherData {
         this.dewTemperature = dewTemperature;
     }
 
-    public int getRain() {
+    public double getRain() {
         return rain;
     }
 
-    public void setRain(int rain) {
+    public void setRain(double rain) {
         this.rain = rain;
     }
 
@@ -160,5 +164,49 @@ public class WeatherData {
 
     public void setSnow(int snow) {
         this.snow = snow;
+    }
+
+    public void setTemperature(String temperature) {
+        this.setTemperature(Double.parseDouble(temperature));
+    }
+
+    public void setHumidity(String humidity) {
+        this.setHumidity(Integer.parseInt(humidity));
+    }
+
+    public void setWindSpeed(String windSpeed) {
+        this.setWindSpeed(Double.parseDouble(windSpeed));
+    }
+
+    public void setPressure(String pressure) {
+        this.setPressure(Double.parseDouble(pressure));
+    }
+
+    public void setSolar(String solar) {
+        this.setSolar(Integer.parseInt(solar));
+    }
+
+    public void setSolarPercentage(String solarPercentage) {
+        this.setSolarPercentage(Integer.parseInt(solarPercentage));
+    }
+
+    public void setUv(String uv) {
+        this.setUv(Double.parseDouble(uv));
+    }
+
+    public void setDewTemperature(String dewTemperature) {
+        this.setDewTemperature(Double.parseDouble(dewTemperature));
+    }
+
+    public void setRain(String rain) {
+        this.setRain(Double.parseDouble(rain));
+    }
+
+    public void setFeelTemperature(String feelTemperature) {
+        this.setFeelTemperature(Double.parseDouble(feelTemperature));
+    }
+
+    public void setSnow(String snow) {
+        this.setSnow(Integer.parseInt(snow));
     }
 }

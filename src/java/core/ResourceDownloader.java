@@ -5,13 +5,10 @@
  */
 package core;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jsoup.Jsoup;
 
 /**
  * This class download the content of a web page.
@@ -28,24 +25,11 @@ public class ResourceDownloader {
      * @param link url of the page to download
      */
     public ResourceDownloader(String link) {
-        String line;
-        BufferedReader siteBuffer = null;
         try {
-            URL site = new URL(link);
-            pageText = "";
-            siteBuffer = new BufferedReader(new InputStreamReader(site.openStream()));
-            while ((line = siteBuffer.readLine()) != null) {
-                pageText += line;
-            }
+            pageText = Jsoup.connect(link).get().html();
         } catch (IOException ex) {
             Logger.getLogger(ResourceDownloader.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                siteBuffer.close();
-            } catch (IOException ex) {
-                Logger.getLogger(ResourceDownloader.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        } 
     }
 
     public String getPageText() {

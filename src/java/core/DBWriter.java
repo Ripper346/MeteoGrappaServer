@@ -66,7 +66,7 @@ public abstract class DBWriter {
             query.setInt(9, data.getSolarPercentage());
             query.setDouble(10, data.getUv());
             query.setDouble(11, data.getDewTemperature());
-            query.setInt(12, data.getRain());
+            query.setDouble(12, data.getRain());
             query.setDouble(13, data.getFeelTemperature());
             query.setInt(14, data.getSnow());
             query.executeUpdate();
