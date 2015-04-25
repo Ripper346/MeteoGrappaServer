@@ -33,7 +33,7 @@ public class GrappaWeatherParser implements Runnable {
         ResourceDownloader rawData = new ResourceDownloader(settings.getInitParameter("GrappaWeatherParser_urlRaw"));
         String[] rawDataArray = rawData.getPageText().split(" ");
         WeatherData data = extractWeatherDataFromString(resource.getPageHtml(), rawDataArray);
-        DerbyDBWriter database = new DerbyDBWriter();
+        DerbyDBWriter database = new DerbyDBWriter(settings.getInitParameter("GrappaWeatherDatabase_path"));
         database.write(data);
         database.close();
     }

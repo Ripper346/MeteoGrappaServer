@@ -21,15 +21,16 @@ public class DerbyDBWriter extends DBWriter {
     /**
      * Open the database or create a new one with default tables.
      */
-    public DerbyDBWriter() {
+    public DerbyDBWriter(String connection) {
         super();
         try {
-            setConnection(DriverManager.getConnection("jdbc:derby://localhost/MeteoGrappa"));
+            setConnection(DriverManager.getConnection("jdbc:derby:" + connection));
             this.createTables();
         } catch (SQLException ex) {
             String code = ex.getSQLState();
-            if (ex.getSQLState().equals("08004"))
+            if (ex.getSQLState().equals("08004")) {
                 this.init("jdbc:derby://localhost/MeteoGrappa;create=true");
+            }
         }
     }
 

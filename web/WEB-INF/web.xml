@@ -151,6 +151,11 @@
         <param-name>GrappaWeatherParser_urlRaw</param-name>
         <param-value>http://www.meteocimagrappa.it/wd/clientraw.txt</param-value>
     </context-param>
+    <context-param>
+        <description>Connection path of the database</description>
+        <param-name>GrappaWeatherDatabase_path</param-name>
+        <param-value>//localhost/MeteoGrappa</param-value>
+    </context-param>
     <listener>
         <description>Grappa weather parser</description>
         <listener-class>workers.ApplicationContextListener</listener-class>
