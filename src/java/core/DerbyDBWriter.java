@@ -18,22 +18,18 @@ import java.util.logging.Logger;
  */
 public class DerbyDBWriter extends DBWriter {
 
-    private Connection connection;
-
     /**
      * Open the database or create a new one with default tables.
      */
     public DerbyDBWriter() {
-        connection = null;
+        super();
         try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            try {
-                connection = DriverManager.getConnection("jdbc:derby:MeteoGrappa");
-            } catch (SQLException ex) {
-                this.init("jdbc:derby:MeteoGrappa;create=true");
-            }
-        } catch (ClassNotFoundException exClass) {
-            Logger.getLogger(DBWriter.class.getName()).log(Level.SEVERE, null, exClass);
+            setConnection(DriverManager.getConnection("jdbc:derby://localhost/MeteoGrappa"));
+            this.createTables();
+        } catch (SQLException ex) {
+            String code = ex.getSQLState();
+            if (ex.getSQLState().equals("08004"))
+                this.init("jdbc:derby://localhost/MeteoGrappa;create=true");
         }
     }
 

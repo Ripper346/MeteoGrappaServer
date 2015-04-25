@@ -22,17 +22,24 @@ public abstract class DBWriter {
     private Connection connection;
 
     /**
+     * Set null the connection
+     */
+    public DBWriter() {
+        connection = null;
+    }
+
+    /**
      * Initialize the database if it's empty. It creates a table in the database
      * MeteoGrappa named MeteoGrappa_data where there will be stored all the
      * information when the main class download the data. The sql for creating
      * table is:
      * <p>
-     * <code>CREATE TABLE `MeteoGrappa_Data` (`datetime` TIMESTAMP NOT NULL,
-     * `condition` VARCHAR(30), `temperature` REAL, `humidity` INTEGER,
-     * `wind_speed` REAL,`wind_direction` VARCHAR(10), `pressure` REAL,
-     * `solar_radiation` INTEGER,`solar_percentage` INTEGER, `uv` REAL,
-     * `deaf_temperature` REAL, `rain` REAL, `feel_temperature` REAL,
-     * `snow` INTEGER, PRIMARY KEY (`datetime`));
+     * <code>CREATE TABLE MeteoGrappa_Data (datetime TIMESTAMP NOT NULL,
+     * condition VARCHAR(30), temperature REAL, humidity INTEGER,
+     * wind_speed REAL,wind_direction VARCHAR(10), pressure REAL,
+     * solar_radiation INTEGER,solar_percentage INTEGER, uv REAL,
+     * deaf_temperature REAL, rain REAL, feel_temperature REAL,
+     * snow INTEGER, PRIMARY KEY (datetime));
      * </code>
      *
      * @param jdbc odbc string for connect and create the database
@@ -40,7 +47,7 @@ public abstract class DBWriter {
     protected void init(String jdbc) {
         try {
             connection = DriverManager.getConnection(jdbc);
-            connection.createStatement().executeUpdate("CREATE TABLE `MeteoGrappa_Data` (`datetime` TIMESTAMP NOT NULL, `condition` VARCHAR(30), `temperature` REAL, `humidity` INTEGER, `wind_speed` REAL, `wind_direction` VARCHAR(10), `pressure` REAL, `solar_radiation` INTEGER, `solar_percentage` INTEGER, `uv` REAL, `deaf_temperature` REAL, `rain` REAL, `feel_temperature` REAL, `snow` INTEGER, PRIMARY KEY (`datetime`));");
+            this.createTables();
         } catch (SQLException ex) {
             Logger.getLogger(DBWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -54,7 +61,7 @@ public abstract class DBWriter {
      */
     protected void write(WeatherData data) {
         try {
-            PreparedStatement query = connection.prepareStatement("INSERT INTO `MeteoGrappa_Data` (`datetime`, `condition`, `temperature`, `humidity`, `wind_speed`, `wind_direction`, `pressure`, `solar_radiation`, `solar_percentage`, `uv`, `deaf_temperature`, `rain`, `feel_temperature`, `snow`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            PreparedStatement query = connection.prepareStatement("INSERT INTO MeteoGrappa_Data (datetime, condition, temperature, humidity, wind_speed, wind_direction, pressure, solar_radiation, solar_percentage, uv, deaf_temperature, rain, feel_temperature, snow) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             query.setTimestamp(1, data.getDate());
             query.setString(2, data.getCondition());
             query.setDouble(3, data.getTemperature());
@@ -76,7 +83,27 @@ public abstract class DBWriter {
     }
 
     /**
+     * Create initial tables on the database
+     */
+    protected void createTables() {
+        try {
+            this.connection.createStatement().executeUpdate("CREATE TABLE MeteoGrappa_Data (datetime TIMESTAMP NOT NULL, condition VARCHAR(30), temperature REAL, humidity INTEGER, wind_speed REAL, wind_direction VARCHAR(10), pressure REAL, solar_radiation INTEGER, solar_percentage INTEGER, uv REAL, deaf_temperature REAL, rain REAL, feel_temperature REAL, snow INTEGER, PRIMARY KEY (datetime))");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBWriter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
      * Close the connection with the database.
      */
     public abstract void close();
+
+    /**
+     * Set connection of the database.
+     * 
+     * @param connection 
+     */
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
 }
