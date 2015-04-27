@@ -51,7 +51,7 @@
                 <!--**************************************************************************
                   Header starts here. It contains Logo and 3 navigation links.
                   ****************************************************************************-->
-                <div id="logo"><!-- Company Logo text --><a href=index.jsp>Meteo del monte Grappa</a></div>
+                <div id="logo" class="links"><!-- Company Logo text --><a href=index.jsp>Meteo del monte Grappa</a></div>
                 <nav> <a href="grafici.jsp" title="Link">Grafici</a>  </nav>
             </header>
             <div id="content">

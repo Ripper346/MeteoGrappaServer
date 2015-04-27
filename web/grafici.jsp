@@ -129,7 +129,7 @@
                     <!--************************************************************************
                       Main Blog content starts here
                       ****************************************************************************-->
-                    <h1><!-- Blog title -->Condizioni meteo attuali</h1>
+                    <h1><!-- Blog title -->Storico dei dati in grafici</h1>
                     <div id="bannerImage"><img src="img/Montegrappa.jpg" alt=""/></div>
                     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
                     <p>
