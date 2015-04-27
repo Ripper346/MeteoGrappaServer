@@ -17,7 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Support class for reading from the database.
+ * 
  * @author Alessandro
  */
 public class DBReader {
@@ -45,7 +46,7 @@ public class DBReader {
         try {
             conn = DriverManager.getConnection(CONNECTION);
             ResultSet rs = conn.createStatement().executeQuery("SELECT datetime, " + columns + " FROM MeteoGrappa_Data" + clause + order);
-            String dataDictionary[] = new String[3];
+            String dataDictionary[] = new String[columns.split(",").length];
             for (int i = 0; i < dataDictionary.length; i++) {
                 dataDictionary[i] = "[";
             }

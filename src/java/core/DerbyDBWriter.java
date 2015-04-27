@@ -5,7 +5,6 @@
  */
 package core;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -20,6 +19,8 @@ public class DerbyDBWriter extends DBWriter {
 
     /**
      * Open the database or create a new one with default tables.
+     *
+     * @param connection path for connecting to the database
      */
     public DerbyDBWriter(String connection) {
         super();
@@ -29,7 +30,7 @@ public class DerbyDBWriter extends DBWriter {
         } catch (SQLException ex) {
             String code = ex.getSQLState();
             if (ex.getSQLState().equals("08004")) {
-                this.init("jdbc:derby://localhost/MeteoGrappa;create=true");
+                this.init("jdbc:derby:" + connection + ";create=true");
             }
         }
     }
