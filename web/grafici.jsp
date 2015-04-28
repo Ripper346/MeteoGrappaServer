@@ -180,7 +180,7 @@
                             switch (type) {
                                 case 24:
                                     // last 24 hours
-                                    cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 1);
+                                    cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) - 1);
                                     time = new Timestamp(cal.getTimeInMillis()).toString();
                                     clause = "datetime > '" + time + "'";
                                     break;
