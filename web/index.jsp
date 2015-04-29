@@ -127,7 +127,7 @@
                     Webcam
                     <nav>
                         <ul>
-                            <li><a href="http://www.cimagrappa.it/meteo/webcam.php" title="Link">Sacrario</a></li>
+                            <li><a href="http://www.skylinewebcams.com/webcam/italia/veneto/treviso/cima-grappa.html?w=210" title="Link">Sacrario</a></li>
                             <li><a href="http://www.cimagrappa.it/meteo/webcam2.php" title="Link">Sud-est</a></li>
                             <li><a href="http://www.cimagrappa.it/meteo/webcam4.php" title="Link">Est</a></li>
                             <li><a href="http://www.cimagrappa.it/meteo/webcam3.php" title="Link">Nord</a></li>

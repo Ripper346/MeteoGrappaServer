@@ -31,6 +31,8 @@
         <script type="text/javascript">
             function createGraph(data, axis, chart, colours, names) {
                 var graph, max, min, point, scales, series, scales;
+                width = $("#bannerImage").width() - 50;
+                height = width / 2;
                 min = Number.MAX_VALUE;
                 max = Number.MIN_VALUE;
                 for (var i = 0; i < data.length; i++) {
@@ -46,70 +48,49 @@
                 for (var i = 0; i < data.length; i++) {
                     series.push({color: colours[i], data: data[i], name: names[i], scale: scales});
                 }
-                ;
+
                 graph = new Rickshaw.Graph({
                     element: document.getElementById(chart),
                     renderer: 'line',
+                    width: width,
+                    height: height,
+                    strokeWidth: 1.5,
                     series: series
                 });
                 new Rickshaw.Graph.Axis.Y.Scaled({
                     element: document.getElementById(axis),
                     graph: graph,
                     orientation: 'left',
+                    height: height,
                     scale: scales,
                     tickFormat: Rickshaw.Fixtures.Number.formatKMBT
                 });
                 new Rickshaw.Graph.Axis.Time({
-                    graph: graph
+                    graph: graph,
+                    height: height
                 });
                 new Rickshaw.Graph.HoverDetail({
                     graph: graph
                 });
+
                 graph.render();
             }
-
-            var container = ["#temperature", "#humidity", "#wind", "#rain"];
-            var containerHeight = [];
-
-            window.onresize = function () {
-                banner = $("#bannerImage").width();
-                for (var i = 0; i < container.length; i++) {
-                    $(container[i]).css("-ms-transform", "scale(" + (banner / 1050) + ")");
-                    $(container[i]).css("-ms-transform-origin", "0 0");
-                    $(container[i]).css("-webkit-transform", "scale(" + (banner / 1050) + ")");
-                    $(container[i]).css("-webkit-transform-origin", "0 0");
-                    $(container[i]).css("-moz-transform", "scale(" + (banner / 1050) + ")");
-                    $(container[i]).css("-moz-transform-origin", "0 0");
-                    $(container[i]).css("height", (containerHeight[i] * (banner / 1050)) + "px");
-                }
-            };
-
-            window.onload = function () {
-                for (var i = 0; i < container.length; i++) {
-                    containerHeight[i] = $(container[i]).height();
-                }
-                window.onresize();
-            };
         </script>
 
 
         <style type="text/css">
             .axis0 {
                 position: absolute;
-                height: 500px;
                 width: 40px;
             }
             #axis1 {
                 position: absolute;
                 left: 1050px;
-                height: 500px;
                 width: 40px;
             }
             .chart {
                 position: relative;
                 left: 50px;
-                height: 500px;
-                width: 1000px;
             }
         </style>
     </head>
@@ -213,10 +194,14 @@
                         out.println("<script type=\"text/javascript\">" + temperature + "\n" + humidity + "\n" + wind + "\n" + rain + "\n</script>");
                     %>
                     <script type="text/javascript">
-            createGraph(temperature, "tempAxis0", "tempChart", ["red", "blue", "grey"], ["Temperatura", "Temperatura percepita", "Punto di rugiada"]);
-            createGraph(humidity, "humAxis0", "humChart", ["red"], ["Umidità"]);
-            createGraph(wind, "windAxis0", "windChart", ["green"], ["Velocità"]);
-            createGraph(rain, "rainAxis0", "rainChart", ["blue"], ["Pioggia"]);
+            window.onload = window.onresize = function () {
+                $(".axis0").html("");
+                $(".chart").html("");
+                createGraph(temperature, "tempAxis0", "tempChart", ["red", "blue", "grey"], ["Temperatura", "Temperatura percepita", "Punto di rugiada"]);
+                createGraph(humidity, "humAxis0", "humChart", ["red"], ["Umidità"]);
+                createGraph(wind, "windAxis0", "windChart", ["green"], ["Velocità"]);
+                createGraph(rain, "rainAxis0", "rainChart", ["blue"], ["Pioggia"]);
+            }
                     </script>
 
                 </section>
@@ -227,7 +212,7 @@
                     Webcam
                     <nav>
                         <ul>
-                            <li><a href="http://www.cimagrappa.it/meteo/webcam.php" title="Link">Sacrario</a></li>
+                            <li><a href="http://www.skylinewebcams.com/webcam/italia/veneto/treviso/cima-grappa.html?w=210" title="Link">Sacrario</a></li>
                             <li><a href="http://www.cimagrappa.it/meteo/webcam2.php" title="Link">Sud-est</a></li>
                             <li><a href="http://www.cimagrappa.it/meteo/webcam4.php" title="Link">Est</a></li>
                             <li><a href="http://www.cimagrappa.it/meteo/webcam3.php" title="Link">Nord</a></li>
