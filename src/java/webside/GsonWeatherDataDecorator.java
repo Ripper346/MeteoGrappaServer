@@ -6,6 +6,7 @@
 package webside;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import core.WeatherData;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class GsonWeatherDataDecorator {
      * the informations of a WeatherData object.
      */
     public static String json(WeatherData data) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss.sss").create();
         ArrayList toGenerateJson = new ArrayList(0);
         toGenerateJson.add(new Direction(WeatherData.WINDDIRECTIONS));
         toGenerateJson.add(data);
