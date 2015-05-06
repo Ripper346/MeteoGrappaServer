@@ -104,7 +104,7 @@ public abstract class DBWriter {
     /**
      * Set connection of the database.
      *
-     * @param connection
+     * @param connection Connection to the database
      */
     public void setConnection(Connection connection) {
         this.connection = connection;

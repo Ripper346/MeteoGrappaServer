@@ -28,6 +28,7 @@ public class DBReader {
     /**
      * Makes a query to the database and extract results.
      *
+     * @param javascriptVariableName Name of the javascript variable 
      * @param columns Columns of the table to extract
      * @param clause Where statement for the query
      * @param order Order statement for the query

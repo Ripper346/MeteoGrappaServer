@@ -5,13 +5,9 @@
  */
 package core;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.*;
 import javax.servlet.ServletContext;
-import webside.GsonWeatherDataDecorator;
+import webside.Exporter;
 
 /**
  * This class elaborates the web page choosed for the parsing of the data and
@@ -23,18 +19,18 @@ public class GrappaWeatherParser implements Runnable {
 
     //private SettingsLoader settings;
     private final ServletContext settings;
-
+    
     public GrappaWeatherParser(ServletContext settings) {
         this.settings = settings;
     }
 
     /**
-     * Runner method of the servlet.<br />
+     * Runner method of the servlet.<br>
      * In order it does:
      * <ul>
      * <li>Download the web page.</li>
      * <li>Parse page for extract data.</li>
-     * <li>Convert to JSON data.</li>
+     * <li>Export the parsed data.</li>
      * <li>Add data to new record in the database.</li>
      * </ul>
      */
@@ -44,12 +40,7 @@ public class GrappaWeatherParser implements Runnable {
         ResourceDownloader rawData = new ResourceDownloader(settings.getInitParameter("GrappaWeatherParser_urlRaw"));
         String[] rawDataArray = rawData.getPageText().split(" ");
         WeatherData data = extractWeatherDataFromString(resource.getPageHtml(), rawDataArray);
-        String jsonData = GsonWeatherDataDecorator.json(data);
-        try (PrintWriter output = new PrintWriter(settings.getRealPath("") + "\\lastData.json")) {
-            output.print(jsonData);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(GrappaWeatherParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Exporter.GsonWeatherDataExport(data, settings.getRealPath(""));
         DerbyDBWriter database = new DerbyDBWriter(settings.getInitParameter("GrappaWeatherDatabase_path"));
         database.write(data);
         database.close();

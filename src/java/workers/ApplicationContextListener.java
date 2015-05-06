@@ -22,10 +22,20 @@ public class ApplicationContextListener implements ServletContextListener {
     private ScheduledExecutorService scheduler;
     private static ServletContext context;
     
+    /**
+     * Get the settings in the web.xml 
+     * 
+     * @return servlet context
+     */
     public ServletContext getServletContext() {
         return context;
     }
 
+    /**
+     * Initialize the servlet.
+     * 
+     * @param settings 
+     */
     @Override
     public void contextInitialized(ServletContextEvent settings) {
         context = settings.getServletContext();

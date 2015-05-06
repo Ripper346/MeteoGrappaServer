@@ -20,7 +20,7 @@ public class DataWorker implements Runnable {
     /**
      * Constructor 
      * 
-     * @param servletContext 
+     * @param servletContext Servlet context where are stored the server settings
      */
     public DataWorker(ServletContext servletContext) {
         this.servletContext = servletContext;
